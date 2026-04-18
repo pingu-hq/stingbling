@@ -1,0 +1,165 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { Clock, ArrowRight, BookOpen, Waves } from '@lucide/astro';
+
+const species = (await getCollection('blog')).sort(
+	(a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Layout title="Jellyfish Species Archive">
+	<section class="animate-fade">
+		<div class="container blog-container">
+			<div class="species-header">
+                <span class="badge">Scientific Database</span>
+				<h1>Documented <span class="gradient-text">Species.</span></h1>
+				<p class="intro-sub">A comprehensive archive of jellyfish species identified in the waters surrounding El Nido and Palawan.</p>
+			</div>
+
+			<div class="species-archive-grid">
+				{species.length > 0 ? (
+					species.map((item, i) => (
+						<a href={`/blog/${item.slug}/`} class="archive-card" style={`animation-delay: ${0.1 + i * 0.05}s`}>
+                            <div class="archive-img">
+                                <img src={item.data.image} alt={item.data.title} />
+                            </div>
+							<div class="archive-info">
+                                <span class="category-tag">{item.data.category}</span>
+								<h3>{item.data.title}</h3>
+								<p class="sci-name">{item.data.scientificName}</p>
+								<span class="read-more">
+									View Analysis <ArrowRight size={16} />
+								</span>
+							</div>
+						</a>
+					))
+				) : (
+					<div class="empty-state">
+						<h3>No species documented yet.</h3>
+						<p>We're still exploring the reefs.</p>
+					</div>
+				)}
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+    .blog-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+	.species-header {
+		text-align: center;
+		padding: 8rem 0 5rem;
+	}
+
+    .badge {
+        background: var(--primary-glow);
+        color: var(--primary);
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+    }
+
+	.species-header h1 {
+		font-size: clamp(3rem, 8vw, 4.5rem);
+		margin-bottom: 1.5rem;
+	}
+
+	.species-header .intro-sub {
+		font-size: 1.25rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.species-archive-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 2rem;
+        padding-bottom: 8rem;
+	}
+
+    .archive-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        overflow: hidden;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .archive-card:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow-blue);
+        transform: translateY(-5px);
+    }
+
+    .archive-img {
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .archive-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition);
+    }
+
+    .archive-card:hover .archive-img img {
+        transform: scale(1.1);
+    }
+
+    .archive-info {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .sci-name {
+        font-family: 'Lora', serif;
+        font-style: italic;
+        color: var(--secondary);
+        font-size: 0.95rem;
+    }
+
+    .read-more {
+        margin-top: 1rem;
+        color: var(--primary);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .category-tag {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--primary);
+        background: var(--primary-glow);
+        padding: 0.3rem 0.7rem;
+        border-radius: 2rem;
+        width: fit-content;
+    }
+
+    @media (max-width: 768px) {
+        .species-header {
+            padding: 5rem 0 3rem;
+        }
+    }
+</style>

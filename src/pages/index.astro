@@ -1,0 +1,338 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import {
+  ArrowRight,
+  Info,
+  ShieldAlert,
+  Waves,
+  Ghost,
+  ExternalLink,
+} from "@lucide/astro";
+
+const species = await getCollection("blog");
+const featuredSpecies = species.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+const stats = [
+  { label: "Documented Species", value: species.length.toString() },
+  //{ label: "High Risk Area", value: "El Nido Bay" },
+  //{ label: "Status", value: "Awareness Active" }
+];
+---
+
+<Layout title="StingBling El Nido">
+  <div class="hero">
+    <div class="hero-content animate-fade">
+      <span class="badge">Marine Awareness & Safety</span>
+      <h1>Sting<br /><span class="gradient-text">Bling.</span></h1>
+      <p class="hero-sub">
+        Empowering locals and tourists with comprehensive data on jellyfish
+        species in El Nido.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#species" class="btn btn-primary">
+          Explore Species <ArrowRight size={20} />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-grid animate-fade">
+      {
+        stats.map((stat) => (
+          <div class="stat-item">
+            <h2>{stat.value}</h2>
+            <p>{stat.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <section id="species" class="species-section">
+    <div class="section-header animate-fade">
+      <h2>Local <span class="gradient-text">Species Database</span></h2>
+      <p>
+        Identify local jellies and understand their impact on the ecosystem.
+      </p>
+    </div>
+
+    <div class="species-grid animate-fade">
+      {
+        featuredSpecies.map((entry, index) => (
+          <a
+            href={`/blog/${entry.slug}`}
+            class="species-card"
+            style={`animation-delay: ${0.1 * index}s`}
+          >
+            <div class="card-image">
+              <img src={entry.data.image} alt={entry.data.title} />
+              <div class="card-overlay">
+                <span class="view-details">
+                  View Details <ExternalLink size={16} />
+                </span>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="category">{entry.data.category}</span>
+              <h3>{entry.data.title}</h3>
+              <p class="sci-name">{entry.data.scientificName}</p>
+              <p class="excerpt">{entry.data.excerpt}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .hero {
+    position: relative;
+    padding: 10rem 0 8rem;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge {
+    background: var(--primary-glow);
+    color: var(--primary);
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    display: inline-block;
+    border: 1px solid var(--border);
+    backdrop-filter: blur(4px);
+  }
+
+  h1 {
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    margin-bottom: 2rem;
+    line-height: 1.1;
+  }
+
+  .hero-sub {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 3.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 1rem 2.5rem;
+    border-radius: 1rem;
+    font-weight: 700;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -5px rgba(14, 165, 233, 0.5);
+  }
+
+  .btn-secondary {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-main);
+    transform: translateY(-3px);
+  }
+
+  .stats-section {
+    background: white;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 0;
+    position: relative;
+  }
+
+  .stats-grid {
+    display: flex;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .stat-item h2 {
+    font-size: 3.5rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-item p {
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+  }
+
+  .species-section {
+    padding: 8rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .section-header h2 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header p {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .species-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .species-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .species-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px -15px rgba(14, 165, 233, 0.15);
+    border-color: var(--primary);
+  }
+
+  .card-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+
+  .species-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(14, 165, 233, 0.6), transparent);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 2rem;
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .species-card:hover .card-overlay {
+    opacity: 1;
+  }
+
+  .view-details {
+    color: white;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary);
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .card-content {
+    padding: 2.5rem;
+  }
+
+  .category {
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .card-content h3 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .sci-name {
+    font-family: "Lora", serif;
+    font-style: italic;
+    color: var(--secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .excerpt {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-view-orient: vertical;
+    overflow: hidden;
+  }
+
+    .species-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

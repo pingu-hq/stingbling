@@ -1,0 +1,313 @@
+---
+import Layout from './Layout.astro';
+import { Clock, ShieldAlert, Waves, Ghost, ChevronRight, MapPin, Beaker, Zap } from '@lucide/astro';
+
+interface Props {
+	title: string;
+	scientificName?: string;
+	date: string;
+	excerpt: string;
+	image?: string;
+	category?: string;
+	threatLevel?: string;
+}
+
+const { title, scientificName, date, excerpt, image, category, threatLevel } = Astro.props;
+---
+
+<Layout title={title} description={excerpt}>
+    <div class="jelly-detail-container animate-fade">
+        <nav class="breadcrumbs">
+            <a href="/">Home</a>
+            <ChevronRight size={14} />
+            <a href="/blog">Species</a>
+            <ChevronRight size={14} />
+            <span>{title}</span>
+        </nav>
+
+        <div class="jelly-hero">
+            <div class="hero-image">
+                <img src={image} alt={title} />
+                <div class="hero-overlay"></div>
+                <div class="hero-labels">
+                    <span class="category-tag">{category}</span>
+                    <h1>{title}</h1>
+                    {scientificName && <p class="scientific-name">{scientificName}</p>}
+                </div>
+            </div>
+            
+            <div class="quick-meta">
+                <div class="meta-item">
+                    <div class="meta-icon"><MapPin size={24} /></div>
+                    <div class="meta-text">
+                        <span>Location</span>
+                        <strong>El Nido, Palawan</strong>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><Zap size={24} /></div>
+                    <div class="meta-text">
+                        <span>Threat Level</span>
+                        <strong>{threatLevel || "See Analysis Below"}</strong>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><Clock size={24} /></div>
+                    <div class="meta-text">
+                        <span>Documented</span>
+                        <strong>{date}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="article-grid">
+            <article class="main-content">
+                <div class="content-card">
+                    <slot />
+                </div>
+            </article>
+        </div>
+    </div>
+</Layout>
+
+<style is:global>
+    .jelly-detail-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        font-weight: 600;
+    }
+
+    .breadcrumbs a:hover {
+        color: var(--primary);
+    }
+
+    .jelly-hero {
+        margin-bottom: 4rem;
+        background: white;
+        border-radius: 2rem;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .hero-image {
+        height: 500px;
+        position: relative;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(15, 23, 42, 0.8), transparent 70%);
+    }
+
+    .hero-labels {
+        position: absolute;
+        bottom: 3rem;
+        left: 3rem;
+        color: white;
+    }
+
+    .category-tag {
+        background: var(--primary);
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
+        display: inline-block;
+    }
+
+    .hero-labels h1 {
+        font-size: 4rem;
+        color: white;
+        margin-bottom: 0.5rem;
+        line-height: 1;
+    }
+
+    .scientific-name {
+        font-family: 'Lora', serif;
+        font-style: italic;
+        font-size: 1.5rem;
+        opacity: 0.9;
+        color: var(--primary);
+    }
+
+    .quick-meta {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding: 2rem 3rem;
+        gap: 2rem;
+        background: white;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .meta-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--primary-glow);
+        color: var(--primary);
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .meta-text span {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+    }
+
+    .meta-text strong {
+        font-size: 1.1rem;
+        color: var(--text-main);
+    }
+
+    .article-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        align-items: start;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .content-card {
+        background: white;
+        padding: 4rem;
+        border-radius: 2rem;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        font-size: 1.15rem;
+        line-height: 1.8;
+    }
+
+    .main-content h3 {
+        font-size: 2rem;
+        margin: 3rem 0 1.5rem;
+        color: var(--text-main);
+        border-left: 5px solid var(--primary);
+        padding-left: 1.5rem;
+    }
+
+    .main-content p {
+        margin-bottom: 2rem;
+    }
+
+    .main-content strong {
+        color: var(--primary);
+        font-weight: 700;
+    }
+
+    .main-content img {
+        width: 100%;
+        height: auto;
+        border-radius: 1.5rem;
+        margin: 3rem 0;
+        box-shadow: var(--shadow-blue);
+    }
+
+    /* ── Footnote markers ──────────────────────────────────────────────── */
+    .main-content sup a,
+    .main-content a[href^="#fn"] {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 0.8em;
+        text-decoration: none;
+        padding: 0 0.1em;
+    }
+    .main-content sup a:hover,
+    .main-content a[href^="#fn"]:hover {
+        text-decoration: underline;
+    }
+
+    /* ── References block at foot of article ──────────────────────────── */
+    .main-content .footnotes,
+    .main-content section[data-footnotes] {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 2px solid var(--border);
+        font-size: 0.95rem;
+        color: var(--text-muted);
+    }
+
+    .main-content .footnotes ol,
+    .main-content section[data-footnotes] ol {
+        padding-left: 1.5rem;
+        margin: 0;
+    }
+
+    .main-content .footnotes li,
+    .main-content section[data-footnotes] li {
+        margin-bottom: 0.75rem;
+        line-height: 1.6;
+        word-break: break-all;
+    }
+
+    .main-content .footnotes a,
+    .main-content section[data-footnotes] a {
+        color: var(--primary);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    /* Back-ref arrow (↩) */
+    .main-content .footnotes .data-footnote-backref,
+    .main-content a[data-footnote-backref] {
+        margin-left: 0.4em;
+        color: var(--text-muted);
+        text-decoration: none;
+    }
+
+
+    @media (max-width: 1024px) {
+        .article-grid {
+            grid-template-columns: 1fr;
+        }
+        .hero-labels h1 {
+            font-size: 3rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .quick-meta {
+            grid-template-columns: 1fr;
+            padding: 2rem;
+        }
+        .hero-image {
+            height: 350px;
+        }
+        .content-card {
+            padding: 2rem;
+        }
+    }
+</style>

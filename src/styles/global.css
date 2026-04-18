@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --primary: #0ea5e9; /* Ocean Blue */
+  --primary-glow: rgba(14, 165, 233, 0.15);
+  --secondary: #8b5cf6; /* Jellyfish Purple */
+  --bg-main: #f0f9ff;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border: #e0f2fe;
+  --accent-light: #ec4899; /* Sting Pink */
+  --selection-bg: #bae6fd;
+  --selection-text: #0369a1;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-blue: 0 10px 30px -10px rgba(14, 165, 233, 0.2);
+  --radius: 1rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(circle at 100% 0%, rgba(139, 92, 246, 0.05) 0%, transparent 25%),
+    radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 25%);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+ul {
+  list-style: none;
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+/* Documentation Layout Helpers */
+.docs-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  padding: 0 2rem;
+}
+
+.sidebar {
+  width: 280px;
+  position: sticky;
+  top: 6rem;
+  height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding-right: 1.5rem;
+  border-right: 1px solid var(--border);
+}
+
+.main-content-docs {
+  flex: 1;
+  padding: 2rem 0 6rem;
+  max-width: 850px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-blue);
+  transform: translateY(-2px);
+}
+
+/* Jellyfish Elements */
+.glow-box {
+  background: var(--primary-glow);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border-left: 4px solid var(--primary);
+}
+
+.blob {
+  position: absolute;
+  z-index: -1;
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: float 20s infinite alternate linear;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 50px) scale(1.1); }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+
